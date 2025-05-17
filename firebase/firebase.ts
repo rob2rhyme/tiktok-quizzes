@@ -1,3 +1,5 @@
+//firebase/firebase.ts
+
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
@@ -11,7 +13,7 @@ const firebaseConfig = {
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!,
     measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID!,
 };
-
+console.log("🔥 Firebase config loaded:", firebaseConfig);
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const analytics = typeof window !== "undefined" ? getAnalytics(app) : null;
