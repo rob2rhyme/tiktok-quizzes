@@ -8,23 +8,57 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
+
 .button {
-  display: block;
-  width: 100%;
-  padding: 0.75rem;
-  margin-top: 1rem;
-  background-color: #ff2d55;
-  color: white;
-  font-weight: bold;
+  background-color: #ff2d55; /* TikTok blue */
+  color: #000;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
+  margin-bottom: 1rem;
+  width: 100%;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .button:hover {
-  background-color: #e0264c;
+  background-color: #00d3cb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
+
+.button:active {
+  background-color: #00b2ac;
+  transform: scale(0.97);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.smallButton {
+  background-color: #ff0050;
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  margin: 1rem auto;       /* ✅ Center horizontally */
+  display: block;          /* ✅ Makes margin auto effective */
+  transition: all 0.2s ease;
+}
+
+.smallButton:hover {
+  background-color: #e6004d;
+  transform: translateY(-2px);
+}
+
+.smallButton:active {
+  transform: scale(0.97);
+}
+
 
 .progressBar {
   height: 8px;
@@ -36,10 +70,12 @@
 }
 
 .progress {
-  height: 100%;
-  background: #ff2d55;
-  transition: width 0.4s ease;
+  height: 8px;
+  background-color: #00f2ea;
+  border-radius: 999px;
+  transition: width 0.3s ease-in-out;
 }
+
 
 .fadeIn {
   animation: fadeIn 1s ease-out forwards;

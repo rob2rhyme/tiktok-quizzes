@@ -1,3 +1,5 @@
+//components/QuizCard.tsx
+
 import { useState } from "react";
 import styles from "../styles/Quiz.module.css";
 import { useRouter } from "next/router";

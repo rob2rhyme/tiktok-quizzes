@@ -7,7 +7,7 @@ export default function ShareButton({ text }: { text: string }) {
       if (navigator.share) {
         await navigator.share({
           title: "Find your celebrity vibe!",
-          text: text,
+          text,
           url: window.location.href,
         });
       } else {
@@ -19,7 +19,7 @@ export default function ShareButton({ text }: { text: string }) {
   };
 
   return (
-    <button className={styles.button} onClick={handleShare}>
+    <button className={styles.smallButton} onClick={handleShare}>
       📤 Share Your Result
     </button>
   );
