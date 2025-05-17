@@ -1,5 +1,17 @@
+//pages/index.tsx
+
 import Head from "next/head";
-import QuizCard from "../components/QuizCard";
+import dynamic from "next/dynamic";
+
+// Dynamically import QuizCard with SSR disabled
+const QuizCard = dynamic(() => import("../components/QuizCard"), {
+  ssr: false,
+  loading: () => (
+    <p style={{ textAlign: "center", fontSize: "1rem", padding: "2rem" }}>
+      Loading your quiz...
+    </p>
+  ),
+});
 
 export default function Home() {
   return (
@@ -12,6 +24,7 @@ export default function Home() {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <main style={{ padding: "2rem" }}>
         <h1
           style={{
@@ -22,6 +35,7 @@ export default function Home() {
         >
           ✨ What Kind of Vibe Are You? ✨
         </h1>
+
         <QuizCard />
       </main>
     </>
