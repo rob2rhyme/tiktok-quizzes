@@ -1,6 +1,7 @@
 // components/ResultScreen
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import html2canvas from "html2canvas";
 import styles from "../styles/Quiz.module.css";
 import { saveQuizResult } from "../firebase/saveResult";
 import { analytics } from "../firebase/firebase";
@@ -85,13 +86,14 @@ const resultProfiles: Record<
 
 export default function ResultScreen({ answers }: { answers: string[] }) {
   const [result, setResult] = useState<typeof resultProfiles.cozy | null>(null);
+  const [copied, setCopied] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const id = matchAnswers(answers);
     const profile = resultProfiles[id];
     setResult(profile);
 
-    // Save to Firestore
     saveQuizResult({
       personalityType: profile.type,
       celebrity: profile.celebrity,
@@ -99,7 +101,6 @@ export default function ResultScreen({ answers }: { answers: string[] }) {
       answers,
     });
 
-    // Log to Analytics
     if (analytics) {
       logEvent(analytics, "quiz_completed", {
         personalityType: profile.type,
@@ -108,69 +109,108 @@ export default function ResultScreen({ answers }: { answers: string[] }) {
     }
   }, [answers]);
 
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(
+        `I got "${result?.type}" like ${result?.celebrity}! 😎 Try it 👉 https://tiktok-quizzes.vercel.app`
+      );
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Copy failed", err);
+    }
+  };
+
+  const handleDownload = async () => {
+    if (!cardRef.current) return;
+    const canvas = await html2canvas(cardRef.current);
+    const link = document.createElement("a");
+    link.download = "quiz-result.png";
+    link.href = canvas.toDataURL();
+    link.click();
+  };
+
   if (!result) return <Shimmer />;
 
   return (
     <div className={`${styles.container} ${styles.fadeIn}`}>
-      <h2>
-        🎉 You are: <strong>{result.type}</strong>
-      </h2>
-      <p style={{ fontSize: "1.2rem", marginTop: "1rem" }}>
-        Your celebrity twin is <strong>{result.celebrity}</strong>.
-      </p>
-      <img
-        src={result.image}
-        alt={result.celebrity}
+      <div
+        ref={cardRef}
         style={{
-          marginTop: "2rem",
-          width: "100%",
-          maxWidth: "400px",
-          borderRadius: "1rem",
-          objectFit: "cover",
-        }}
-        onError={(e) => {
-          (e.target as HTMLImageElement).src = "/images/fallback.jpg";
-        }}
-      />
-      <p style={{ marginTop: "1.5rem", fontStyle: "italic" }}>
-        {result.suggestion}
-      </p>
-
-      <ShareButton
-        text={`I'm ${result.type} like ${result.celebrity}! Take the quiz 👉`}
-      />
-      <Disclaimer />
-
-      {/* <div
-        style={{
-          marginTop: "3rem",
-          backgroundColor: "#f8f8f8",
+          backgroundColor: "#000",
+          color: "#fff",
           padding: "1.5rem",
           borderRadius: "1rem",
+          maxWidth: "420px",
+          margin: "0 auto",
           textAlign: "center",
-          boxShadow: "0 4px 16px rgba(0,0,0,0.05)",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
         }}
       >
-        <h3 style={{ marginBottom: "0.75rem" }}>🔁 Discover More Fun</h3>
-        <p style={{ fontSize: "0.9rem", marginBottom: "1rem" }}>
-          Curious what other vibe you could be? Try another quiz and unlock your
-          alternate personality!
+        <h2>
+          🎉 You are:{" "}
+          <strong style={{ color: "#ff0050" }}>{result.type}</strong>
+        </h2>
+        <p style={{ fontSize: "1.2rem", marginTop: "1rem" }}>
+          Your celebrity twin is <strong>{result.celebrity}</strong>.
         </p>
-        <a
-          href="/quizzes"
+        <img
+          src={result.image}
+          alt={result.celebrity}
           style={{
-            display: "inline-block",
-            backgroundColor: "#111",
+            marginTop: "2rem",
+            width: "100%",
+            maxWidth: "400px",
+            borderRadius: "1rem",
+            objectFit: "cover",
+          }}
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = "/images/fallback.jpg";
+          }}
+        />
+        <p style={{ marginTop: "1.5rem", fontStyle: "italic" }}>
+          {result.suggestion}
+        </p>
+      </div>
+
+      <div style={{ marginTop: "1.5rem", textAlign: "center" }}>
+        <button
+          onClick={handleCopy}
+          style={{
+            backgroundColor: "#ff0050",
             color: "#fff",
             padding: "0.75rem 1.25rem",
             borderRadius: "0.5rem",
             fontWeight: "bold",
-            textDecoration: "none",
+            cursor: "pointer",
+            border: "none",
+            marginRight: "1rem",
           }}
         >
-          🚀 Explore All Quizzes
-        </a>
-      </div> */}
+          {copied ? "✅ Copied!" : "📋 Copy Result"}
+        </button>
+
+        <button
+          onClick={handleDownload}
+          style={{
+            backgroundColor: "#00f2ea",
+            color: "#000",
+            padding: "0.75rem 1.25rem",
+            borderRadius: "0.5rem",
+            fontWeight: "bold",
+            cursor: "pointer",
+            border: "none",
+          }}
+        >
+          ⬇️ Download Image
+        </button>
+      </div>
+
+      <ShareButton
+        text={`I got "${result.type}" like ${result.celebrity} 😎 Try it 👉 https://tiktok-quizzes.vercel.app`}
+      />
+
+      <Disclaimer />
 
       <div style={{ marginTop: "3rem", textAlign: "center" }}>
         <h3 style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>
