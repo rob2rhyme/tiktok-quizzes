@@ -10,6 +10,7 @@ import ShareButton from "./ShareButton";
 import Disclaimer from "./Disclaimer";
 import Shimmer from "./Shimmer";
 import { matchAnswers } from "../utils/scoring";
+import Toast from "./Toast"; // ✅ New toast component
 
 type ResultID =
   | "cozy"
@@ -86,8 +87,11 @@ const resultProfiles: Record<
 
 export default function ResultScreen({ answers }: { answers: string[] }) {
   const [result, setResult] = useState<typeof resultProfiles.cozy | null>(null);
-  const [copied, setCopied] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const isIOS =
+    typeof window !== "undefined" &&
+    /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   useEffect(() => {
     const id = matchAnswers(answers);
@@ -114,20 +118,39 @@ export default function ResultScreen({ answers }: { answers: string[] }) {
       await navigator.clipboard.writeText(
         `I got "${result?.type}" like ${result?.celebrity}! 😎 Try it 👉 https://tiktok-quizzes.vercel.app`
       );
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setToast("📋 Result copied to clipboard!");
     } catch (err) {
       console.error("Copy failed", err);
+      setToast("⚠️ Failed to copy.");
     }
   };
 
   const handleDownload = async () => {
     if (!cardRef.current) return;
-    const canvas = await html2canvas(cardRef.current);
-    const link = document.createElement("a");
-    link.download = "quiz-result.png";
-    link.href = canvas.toDataURL();
-    link.click();
+
+    try {
+      const canvas = await html2canvas(cardRef.current);
+      const image = canvas.toDataURL("image/png");
+
+      if (isIOS) {
+        const win = window.open();
+        if (win) {
+          win.document.write(`<img src="${image}" style="width:100%;" />`);
+          setToast("🧠 Tap and hold the image to save.");
+        } else {
+          setToast("⚠️ Please allow popups to view the image.");
+        }
+      } else {
+        const link = document.createElement("a");
+        link.download = "quiz-result.png";
+        link.href = image;
+        link.click();
+        setToast("✅ Image downloaded!");
+      }
+    } catch (err) {
+      console.error("Download failed", err);
+      setToast("⚠️ Download failed.");
+    }
   };
 
   if (!result) return <Shimmer />;
@@ -187,7 +210,7 @@ export default function ResultScreen({ answers }: { answers: string[] }) {
             marginRight: "1rem",
           }}
         >
-          {copied ? "✅ Copied!" : "📋 Copy Result"}
+          📋 Copy Result
         </button>
 
         <button
@@ -236,6 +259,9 @@ export default function ResultScreen({ answers }: { answers: string[] }) {
           🚀 Explore All Quizzes
         </a>
       </div>
+
+      {/* ✅ Toast Message */}
+      {toast && <Toast message={toast} onClose={() => setToast(null)} />}
     </div>
   );
 }
