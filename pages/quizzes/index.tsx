@@ -17,7 +17,7 @@ export default function QuizHub() {
 
         <div
           style={{
-            background: "#f5f5f5",
+            background: "#65737e",
             borderRadius: "1rem",
             padding: "1.5rem",
             textAlign: "center",

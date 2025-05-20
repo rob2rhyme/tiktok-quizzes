@@ -5,13 +5,16 @@ body {
   padding: 0;
   margin: 0;
   font-family: "Poppins", "Inter", sans-serif;
-  background-color: #fff;
-  color: #222;
+  background-color: #000;
+  /* DARK BACKGROUND */
+  color: #fff;
+  /* LIGHT TEXT */
   line-height: 1.6;
 }
 
 a {
-  color: #00d1b2;
+  color: #00f2ea;
+  /* TikTok neon-aqua */
   text-decoration: none;
 }
 

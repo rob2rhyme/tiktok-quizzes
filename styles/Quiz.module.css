@@ -3,15 +3,17 @@
   max-width: 600px;
   margin: 2rem auto;
   padding: 2rem;
-  background-color: #fff;
+  background-color: #1f1f1f;
+  /* Dark card bg */
   border-radius: 1rem;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
 }
 
-
 .button {
-  background-color: #ff2d55; /* TikTok blue */
-  color: #fff;
+  background-color: #00f2ea;
+  /* TikTok neon-aqua */
+  color: #000;
+  /* Dark text on neon */
   border: none;
   border-radius: 0.75rem;
   padding: 1rem 1.25rem;
@@ -21,23 +23,26 @@
   margin-bottom: 1rem;
   width: 100%;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .button:hover {
-  background-color: #00d3cb;
+  background-color: #e0245e;
+  color: #fff;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
 }
 
 .button:active {
-  background-color: #00b2ac;
+  background-color: #e0245e;
+  color: #fff;
   transform: scale(0.97);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .smallButton {
-  background-color: #ff0050;
+  background-color: #fe2c55;
+  /* TikTok pop-red */
   color: #fff;
   padding: 0.75rem 1.25rem;
   border-radius: 0.5rem;
@@ -45,13 +50,13 @@
   font-size: 1rem;
   border: none;
   cursor: pointer;
-  margin: 1rem auto;       /* ✅ Center horizontally */
-  display: block;          /* ✅ Makes margin auto effective */
+  margin: 1rem auto;
+  display: block;
   transition: all 0.2s ease;
 }
 
 .smallButton:hover {
-  background-color: #e6004d;
+  background-color: #e0245e;
   transform: translateY(-2px);
 }
 
@@ -59,11 +64,11 @@
   transform: scale(0.97);
 }
 
-
 .progressBar {
   height: 8px;
   width: 100%;
-  background: #eee;
+  background: #333;
+  /* Dark track */
   border-radius: 4px;
   margin-top: 2rem;
   overflow: hidden;
@@ -71,11 +76,11 @@
 
 .progress {
   height: 8px;
-  background-color: #00f2ea;
+  background-color: #e0245e;
+  /* Fill in neon-aqua */
   border-radius: 999px;
   transition: width 0.3s ease-in-out;
 }
-
 
 .fadeIn {
   animation: fadeIn 1s ease-out forwards;
@@ -87,6 +92,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

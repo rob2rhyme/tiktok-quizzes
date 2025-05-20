@@ -1,3 +1,4 @@
+//pages/_document.tsx
 import Document, {
   Html,
   Head,
@@ -16,25 +17,16 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          {/* TikTok embed script */}
+          {/* Make mobile browsers use dark theme color */}
+          <meta name="theme-color" content="#000000" />
+
           <script async src="https://www.tiktok.com/embed.js"></script>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            // crossOrigin="true"
-          />
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap"
             rel="stylesheet"
           />
-
-          {/* Optional: Custom fonts (Uncomment if you use them) */}
-          {/* 
-            <link rel="preconnect" href="https://fonts.googleapis.com" />
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
-            */}
         </Head>
         <body>
           <Main />

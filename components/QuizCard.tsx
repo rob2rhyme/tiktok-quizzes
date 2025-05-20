@@ -139,7 +139,7 @@ export default function QuizCard() {
           style={{ width: `${((current + 1) / questions.length) * 100}%` }}
         ></div>
       </div>
-      <p style={{ textAlign: "right", fontSize: "0.8rem", color: "#666" }}>
+      <p style={{ textAlign: "right", fontSize: "0.8rem", color: "#00f2ea" }}>
         Question {current + 1} of {questions.length}
       </p>
     </div>
